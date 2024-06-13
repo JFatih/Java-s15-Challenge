@@ -471,4 +471,13 @@ public class Main {
 
     }
 
+//protected static Long[] convertStringArrayToLongArray(String data) {
+//    String[] booksIdStringArray = data.split(",");
+//    Long[] booksIdLongArray = new Long[booksIdStringArray.length];
+//    for (int i = 0; i < booksIdLongArray.length; i++) {
+//        booksIdLongArray[i] = Long.parseLong(booksIdStringArray[i]);
+//    }
+//    return booksIdLongArray;
+//}
+
 
