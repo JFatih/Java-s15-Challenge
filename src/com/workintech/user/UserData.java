@@ -2,7 +2,7 @@ package com.workintech.user;
 
 public abstract class UserData {
     private static int idCounter = 10000;
-    private int id;
+    private final int id;
     private String name;
     private String surname;
     private String email;

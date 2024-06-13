@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public abstract class Books {
     private static Long idCounter = 20L;
-    private Long id;
+    private final Long id;
     private String name;
     private String author;
     private int price;

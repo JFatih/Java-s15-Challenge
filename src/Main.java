@@ -48,15 +48,16 @@ public class Main {
 
         LibraryDatabase workintecthKutuphanesi = new LibraryDatabase(bookMainData, userFatih, userKerem, adminFatih);
 
-        Books book10 = workintecthKutuphanesi.getBook(20L);
-        Books book11 = workintecthKutuphanesi.getBook(21L);
+        Map<Long, Books> databaseBooks = workintecthKutuphanesi.getBooks();
+        Books book10 = databaseBooks.get(20L);
+        Books book11 = databaseBooks.get(21L);
         book10.setStatus(BookStatus.UNAVAILABLE);
         book11.setStatus(BookStatus.UNAVAILABLE);
         userFatih.setRentBooks(new ClientRentBook(book10, LocalDate.of(2024, 5, 10)));
         userFatih.setRentBooks(new ClientRentBook(book11, LocalDate.of(2024, 6, 10)));
 
-        Books book12 = workintecthKutuphanesi.getBook(22L);
-        Books book13 = workintecthKutuphanesi.getBook(23L);
+        Books book12 = databaseBooks.get(22L);
+        Books book13 = databaseBooks.get(23L);
         book12.setStatus(BookStatus.UNAVAILABLE);
         book13.setStatus(BookStatus.UNAVAILABLE);
         userKerem.setRentBooks(new ClientRentBook(book12,LocalDate.of(2024, 6, 11)));
@@ -250,11 +251,13 @@ public class Main {
                                 System.out.println(book);
                             }
                         }
+                        break;
                     case 11:
                         workintecthKutuphanesi.getRentedBooksData();
                         break;
                     default:
                         System.out.println("Geçersiz seçim, Tekrar deneyin");
+                        break;
                 }
             }
 
@@ -359,7 +362,8 @@ public class Main {
                                     break;
                                 case 2:
                                     int id = ScanManager.getIntInput("Güncellemek istediğiniz kitap idsini girin :");
-                                    Books updateBook = workintecthKutuphanesi.getBookForUpdate(Long.parseLong(String.valueOf(id)));
+                                    Map<Long, Books> booksDatabase = workintecthKutuphanesi.getBooks();
+                                    Books updateBook = booksDatabase.get(Long.parseLong(String.valueOf(id)));
                                     int exitUpdate = 0;
                                     while( exitUpdate != 9 ){
                                         int updateChoice = ScanManager.getIntInput( "Güncellemek istediğiniz datanın değerini giriniz." + "\n" +
@@ -404,8 +408,10 @@ public class Main {
                                                 break;
                                             case 9:
                                                 exitUpdate = 9;
+                                                break;
                                         }
                                     }
+                                    break;
                             }
                         }
                     case 7:
@@ -429,6 +435,7 @@ public class Main {
                                 System.out.println(book);
                             }
                         }
+                        break;
                 }
             }
 

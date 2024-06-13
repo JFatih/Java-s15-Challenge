@@ -14,10 +14,11 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
     private static Map<Long, Books> books;
     private UserData currentlyUser;
     private Set<Books> searchResult;
-    private Set<Books> cart = new HashSet<>();
+    private Set<Books> cart;
 
 
     public LibraryDatabase(Set<Books> data, UserData... newUserData) {
+        cart = new HashSet<>();
         userDatabase = new TreeMap<>();
         books = new TreeMap<>();
         for(UserData user: newUserData){
@@ -29,16 +30,8 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
     }
 
     //Getter Methods
-    public static Map<String, UserData> getUserDatabase() {
-        return userDatabase;
-    }
-
     public Map<Long, Books> getBooks() {
         return books;
-    }
-
-    public Books getBook(Long id){
-        return books.get(id);
     }
 
     public UserData getCurrentlyUser() {
@@ -53,9 +46,10 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
         return cart;
     }
 
-    public Books getBookForUpdate(Long id) {
-        return books.get(id);
-    }
+
+
+
+
 
     //LibraryManagement implementations
     @Override
@@ -81,7 +75,7 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
 
     @Override
     public boolean loggedStatus(){
-        return currentlyUser.getStatus().toLowerCase().equals("admin");
+        return currentlyUser.getStatus().equalsIgnoreCase("admin");
     }
 
     @Override
@@ -93,6 +87,9 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
         System.out.println("Yeni kullanıcı bilgileri" + newUserData);
     }
 
+
+
+
     //Book Management implementations
     @Override
     public void addBook(Books newBooks){
@@ -101,7 +98,7 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
     }
 
     @Override
-    public void findBook(Long id){
+    public void findBook(Object data){
         List<Books> booksList = new ArrayList<>();
         for(Map.Entry<Long, Books> entry : books.entrySet()){
             booksList.add(entry.getValue());
@@ -109,36 +106,23 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
         searchResult =  new LinkedHashSet<>();
         boolean isHaveit = false;
         for(Books book : booksList){
-            if(book.getId().equals(id)){
-                searchResult.add(book);
-                isHaveit = true;
+            if ( data instanceof Long ){
+                if(book.getId().equals(((Long)data))){
+                    searchResult.add(book);
+                    isHaveit = true;
+                }
+            } else if ( data instanceof String ){
+                String simpleName = book.getName().toLowerCase().replaceAll("[^a-zA-Z]", "");
+                String simpleData = ((String) data).toLowerCase().replaceAll("[^a-zA-Z]", "");
+                String simpleAuthor = book.getAuthor().toLowerCase().replaceAll("[^a-zA-Z]", "");
+                if(simpleName.equals(simpleData) || simpleAuthor.equals(simpleData)){
+                    searchResult.add(book);
+                    isHaveit = true;
+                }
             }
         }
         if(!isHaveit){
-            System.out.println("No books with Id " + id + " can be found.");
-        }
-    }
-
-    @Override
-    public void findBook(String data){
-        List<Books> booksList = new ArrayList<>();
-        for(Map.Entry<Long, Books> entry : books.entrySet()){
-            booksList.add(entry.getValue());
-        }
-        searchResult = new LinkedHashSet<>();
-        boolean isHaveit = false;
-        for(Books book : booksList){
-            String simpleName = book.getName().toLowerCase().replaceAll("[^a-zA-Z]", "");
-            String simpleData = data.toLowerCase().replaceAll("[^a-zA-Z]", "");
-            String simpleAuthor = book.getAuthor().toLowerCase().replaceAll("[^a-zA-Z]", "");
-            if(simpleName.equals(simpleData) || simpleAuthor.equals(simpleData)){
-                searchResult.add(book);
-                isHaveit = true;
-            }
-        }
-        if( !isHaveit ){
-            System.out.println("Sorry don't have that book.");
-
+            System.out.println("Kütüphanemizde aradığınız kitap bulunmamaktadır.");
         }
     }
 
@@ -177,6 +161,10 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
             }
         }
     }
+
+
+
+
 
     //Cart Management
     @Override
@@ -348,6 +336,9 @@ public class LibraryDatabase implements LibraryManagement, BookManagement, CartM
             }
         }
     }
+
+
+
 
     @Override
     public String toString() {
