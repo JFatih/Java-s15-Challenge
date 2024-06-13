@@ -12,4 +12,21 @@ public class ClientRentBook {
         this.rentedBook = rentedBook;
         this.rentDate = rentDate;
     }
+
+    public Books getRentedBook() {
+        return rentedBook;
+    }
+
+    public LocalDate getRentDate() {
+        return rentDate;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "rentedBook=" + rentedBook +
+                ", rentDate=" + rentDate +
+                '}';
+    }
+
 }

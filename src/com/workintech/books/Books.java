@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Books {
-    private static Long idCounter = 1L;
+    private static Long idCounter = 20L;
     private Long id;
     private String name;
     private String author;
@@ -49,6 +49,43 @@ public abstract class Books {
 
     public LocalDate getDateOfPurchase() {
         return dateOfPurchase;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public void setDateOfPurchase(LocalDate dateOfPurchase) {
+        this.dateOfPurchase = dateOfPurchase;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Books books = (Books) o;
+        return Objects.equals(id, books.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override
